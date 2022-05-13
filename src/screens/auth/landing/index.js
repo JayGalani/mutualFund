@@ -6,35 +6,20 @@ import {CommonActions} from '@react-navigation/native';
 import {asyncStorageKey, screenString} from '../../../helpers/strings';
 
 const LandingScreen = ({navigation}) => {
-  const getLoginData = () => {
-    AsyncStorage.getItem(asyncStorageKey.isLogin).then(value => {
+  const getLoginData = async () => {
+    await AsyncStorage.getItem(asyncStorageKey.isLogin).then(value => {
       if (value !== null) {
         navigation.dispatch(
           CommonActions.reset({
-            index: 0,
-            routes: [{name: screenString.main}],
+            index: 1,
+            routes: [{name: screenString.listingScreen}],
           }),
         );
       } else {
         navigation.dispatch(
           CommonActions.reset({
-            index: 0,
-            routes: [{name: screenString.login}],
-          }),
-        );
-      }
-    });
-  };
-
-  const getResult = () => {
-    AsyncStorage.getItem(asyncStorageKey.onBoarding).then(value => {
-      if (value !== null) {
-        return getLoginData();
-      } else {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{name: screenString.onBoarding}],
+            index: 1,
+            routes: [{name: screenString.loginScreen}],
           }),
         );
       }
@@ -42,7 +27,7 @@ const LandingScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    getResult();
+    getLoginData();
   }, []);
 
   return <View />;

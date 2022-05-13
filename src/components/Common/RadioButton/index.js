@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, TouchableOpacity, Image} from 'react-native';
 
-import {icons} from '../../../helpers/iconConstants';
+import {icons} from '../../../helpers/iconConstant';
 import style from './styles';
 
 const RadioButton = ({

@@ -3,9 +3,11 @@ import {LogBox, Text, StatusBar, TextInput} from 'react-native';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import Toast from 'react-native-toast-message';
+import {ThemeContext, getTheme} from 'react-native-material-ui';
 
 import storage from './src/reducers/store';
 import MainNavigator from './src/navigation/mainNavigator';
+import {uiTheme} from './src/helpers/constants';
 
 const {store, persistor} = storage();
 
@@ -21,17 +23,19 @@ LogBox.ignoreAllLogs();
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <StatusBar
-          translucent
-          backgroundColor={'transparent'}
-          barStyle={'dark-content'}
-        />
-        <MainNavigator />
-        <Toast position="bottom" visibilityTime={2000} />
-      </PersistGate>
-    </Provider>
+    <ThemeContext.Provider value={getTheme(uiTheme)}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <StatusBar
+            translucent
+            backgroundColor={'transparent'}
+            barStyle={'dark-content'}
+          />
+          <MainNavigator />
+          <Toast position="bottom" visibilityTime={2000} />
+        </PersistGate>
+      </Provider>
+    </ThemeContext.Provider>
   );
 };
 

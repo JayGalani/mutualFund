@@ -22,7 +22,7 @@ const MainNavigator = () => {
           tabBarHideOnKeyboard: true,
           orientation: 'portrait',
         }}
-        initialRouteName={screenString.loginScreen}>
+        initialRouteName={screenString.landing}>
         <Stack.Screen name={screenString.landing} component={LandingScreen} />
         <Stack.Screen name={screenString.loginScreen} component={LoginScreen} />
         <Stack.Screen

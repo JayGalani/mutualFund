@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
-import { hp, wp } from '../../../helpers/constants';
-import { colors, fontFamily } from '../../../helpers/utils';
+import {hp, wp} from '../../../helpers/constants';
+import {colors, fontFamily} from '../../../helpers/utils';
 
 const style = StyleSheet.create({
   containerStyle: {
@@ -22,14 +22,14 @@ const style = StyleSheet.create({
   titleTextStyle: {
     color: colors.commonColor,
     fontSize: wp(5.33),
-    fontFamily: fontFamily.ceraPro_Light,
+    fontFamily: fontFamily.regular,
     fontWeight: '700',
   },
   subTitleTextStyle: {
     marginTop: hp(0.49),
     marginBottom: hp(2.46),
     fontSize: wp(9.6),
-    fontFamily: fontFamily.ceraPro_Light,
+    fontFamily: fontFamily.regular,
     fontWeight: '700',
     color: colors.commonColor,
   },
@@ -38,8 +38,9 @@ const style = StyleSheet.create({
     marginBottom: hp(2.46),
   },
   forgotPasswordTextStyle: {
+    alignSelf: 'flex-end',
     fontSize: wp(3.73),
-    fontFamily: fontFamily.ceraPro_Light,
+    fontFamily: fontFamily.regular,
     fontWeight: 'normal',
     lineHeight: 20,
     color: colors.forgotPasswordColor,
@@ -55,8 +56,20 @@ const style = StyleSheet.create({
   loginButtonTextStyle: {
     color: colors.primaryWhite,
     fontSize: wp(4.8),
-    fontFamily: fontFamily.ceraPro_Light,
+    fontFamily: fontFamily.regular,
     fontWeight: '400',
+  },
+  bottomTextViewStyle: {
+    position: 'absolute',
+    bottom: hp(5),
+    flexDirection: 'row',
+    marginTop: hp(5.33),
+    alignSelf: 'center',
+  },
+  donotHaveAccountTextStyle: {
+    fontSize: wp(3.73),
+    fontFamily: fontFamily.semiBold,
+    color: colors.commonTextColor,
   },
 });
 

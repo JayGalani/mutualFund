@@ -11,6 +11,6 @@ export const screenString = {
 };
 
 export const asyncStorageKey = {
-  isLogin: 'isLogin',
-  userDetails: 'userDetails',
+  isLogin: 'IsLogin',
+  userDetails: 'UserDetails',
 };

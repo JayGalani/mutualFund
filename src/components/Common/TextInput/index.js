@@ -1,12 +1,10 @@
 import React from 'react';
 import {Image, TextInput, TouchableOpacity, View} from 'react-native';
 
-import {icons} from '../../../helpers/iconConstants';
 import style from './styles';
 
 const InputText = ({
   ref,
-  isVisible,
   containerStyle,
   textInputStyle,
   placeholder,
@@ -26,7 +24,6 @@ const InputText = ({
   editable,
   multiline,
   numberOfLines,
-  disabled,
 }) => {
   return (
     <View style={[style.containerStyle, containerStyle]}>
@@ -57,19 +54,6 @@ const InputText = ({
           <Image
             source={icon}
             style={[style.imageStyle, imageStyle]}
-            resizeMode={'contain'}
-          />
-        </TouchableOpacity>
-      )}
-      {isVisible && (
-        <TouchableOpacity
-          style={style.copyIconViewStyle}
-          onPress={onCopyPress}
-          activeOpacity={0.7}
-          disabled={disabled}>
-          <Image
-            source={icons.copy}
-            style={style.copyIconStyle}
             resizeMode={'contain'}
           />
         </TouchableOpacity>

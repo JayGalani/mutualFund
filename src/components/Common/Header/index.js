@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 
-import {icons} from '../../../helpers/iconConstants';
+import {icons} from '../../../helpers/iconConstant';
 import HeaderButton from '../HeaderButton';
 import style from './styles';
 
@@ -32,7 +32,7 @@ const Header = ({
             <HeaderButton
               headerButtomMainStyle={headerButtomMainStyle}
               containerStyle={leftIconContainerStyle}
-              icon={icons.setting}
+              icon={icons.backIcon}
               onPress={onLeftIconPress}
               imageStyle={[style.settingIconStyle, leftIconStyle]}
             />
