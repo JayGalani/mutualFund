@@ -7,4 +7,6 @@ export const icons = {
   downArrow: require('../../assets/icons/downArrow.png'),
   search: require('../../assets/icons/search.png'),
   close: require('../../assets/icons/close.png'),
+  christian_faith: require('../../assets/icons/christian_faith.png'),
+  giphy: require('../../assets/icons/giphy.gif'),
 };

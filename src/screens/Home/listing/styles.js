@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-import {hp, wp} from '../../../helpers/constants';
+import {hp, statusBarHeight, wp} from '../../../helpers/constants';
 import {colors, fontFamily} from '../../../helpers/utils';
 
 const style = StyleSheet.create({
@@ -46,6 +46,49 @@ const style = StyleSheet.create({
     height: wp(2.53),
     width: wp(2.53),
     alignSelf: 'center',
+  },
+  profileIconStyle: {
+    position: 'absolute',
+    top: statusBarHeight,
+    right: wp(5.33),
+    backgroundColor: colors.backgroundColor,
+    height: hp(5),
+    width: hp(5),
+    borderRadius: hp(5) / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileTextStyle: {
+    fontFamily: fontFamily.semiBold,
+    fontSize: wp(3.73),
+    color: colors.commonColor,
+  },
+  itemViewStyle: {
+    padding: hp(2),
+    marginHorizontal: wp(5.33),
+    backgroundColor: colors.commonTextColor,
+    borderRadius: wp(2.66),
+    flexDirection: 'row',
+  },
+  iconStyle: {
+    height: hp(5),
+    width: hp(5),
+    tintColor: 'white',
+    alignSelf: 'center',
+  },
+  itemTitleTextStyle: {
+    flex: 1,
+    marginHorizontal: wp(2.66),
+    color: colors.primaryWhite,
+    fontSize: wp(3.73),
+    fontFamily: fontFamily.semiBold,
+  },
+  itemSubTitleViewStyle: {
+    marginTop: hp(1),
+    marginHorizontal: wp(2.66),
+    color: colors.primaryWhite,
+    fontSize: wp(3),
+    fontFamily: fontFamily.medium,
   },
 });
 

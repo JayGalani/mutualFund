@@ -1,53 +1,67 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 
-import {Header} from '../../../components';
+import {ActivityLoader, Header} from '../../../components';
 import {icons} from '../../../helpers/iconConstant';
 import style from './styles';
-import {colors, fontFamily} from '../../../helpers/utils';
-import {hp, statusBarHeight, wp} from '../../../helpers/constants';
+import {colors} from '../../../helpers/utils';
+import {hp} from '../../../helpers/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {asyncStorageKey, screenString} from '../../../helpers/strings';
 
 const ListingScreen = ({navigation}) => {
   const [searchValue, setSearchValue] = useState('');
   const [currentUser, setCurrentUser] = useState({});
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getData = async () => {
     const data = await AsyncStorage.getItem(asyncStorageKey.userDetails);
     const userData = JSON.parse(data);
-    console.log(userData);
     setCurrentUser(userData);
+  };
+
+  const getMutualFundData = async () => {
+    let response = await fetch('https://api.mfapi.in/mf');
+    let json = await response.json();
+    setData(json);
   };
 
   useEffect(() => {
     getData();
+    getMutualFundData();
   }, []);
+
+  const onItemPress = async item => {
+    console.log(item);
+    let response = await fetch(`https://api.mfapi.in/mf/${item?.schemeCode}`);
+    let json = await response.json();
+    console.log('json', json);
+    navigation.navigate(screenString.detailScreen, {data: json});
+  };
 
   return (
     <View style={style.container}>
+      <ActivityLoader visible={isLoading} />
       <Header isTitle={'Mutual Fund List'} />
       <TouchableOpacity
-        style={{
-          position: 'absolute',
-          top: statusBarHeight,
-          right: wp(5.33),
-          backgroundColor: colors.backgroundColor,
-          height: hp(5),
-          width: hp(5),
-          borderRadius: hp(5) / 2,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+        style={style.profileIconStyle}
         onPress={() => {
           navigation.navigate(screenString.signUpScreen, {data: currentUser});
         }}>
-        <Text
-          style={{fontFamily: fontFamily.semiBold, color: colors.commonColor}}>
+        <Text style={style.profileTextStyle}>
           {currentUser?.name
             ?.split(' ')
             .map(x => x[0])
-            .join('')}
+            .join('')
+            .toUpperCase()}
         </Text>
       </TouchableOpacity>
       <View style={style.subContainerStyle}>
@@ -75,15 +89,33 @@ const ListingScreen = ({navigation}) => {
           </TouchableOpacity>
         )}
       </View>
-      <View
-        style={{
-          paddingVertical: hp(2),
-          marginHorizontal: wp(5.33),
-          backgroundColor: colors.orange,
-          borderRadius: wp(2.66),
-        }}>
-        <Text>cehvcas</Text>
-      </View>
+      <FlatList
+        data={data.slice(0, 5)}
+        keyExtractor={(_, index) => index.toString()}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity
+              style={style.itemViewStyle}
+              onPress={() => onItemPress(item)}
+              activeOpacity={0.5}>
+              <Image
+                source={icons.christian_faith}
+                style={style.iconStyle}
+                resizeMode={'contain'}
+              />
+              <View style={{flex: 1}}>
+                <Text style={style.itemTitleTextStyle}>{item?.schemeName}</Text>
+                <Text style={style.itemSubTitleViewStyle}>
+                  {'Asset Management'}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
+        ItemSeparatorComponent={() => <View style={{height: hp(2)}} />}
+        ListHeaderComponent={() => <View style={{height: hp(2)}} />}
+        ListFooterComponent={() => <View style={{height: hp(2)}} />}
+      />
     </View>
   );
 };

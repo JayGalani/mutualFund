@@ -28,9 +28,11 @@ const signUpScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const [isDatePicker, setIsDatePicker] = useState(false);
 
+  console.log('date', date);
+
   const opneDropDown = () => setOpen(!open);
 
-  console.log('auth:--', allUserData);
+  console.log('allUserData:--', allUserData);
 
   const selectedItem = allUserData?.filter(item => item?.email === email);
 
@@ -71,7 +73,7 @@ const signUpScreen = ({navigation}) => {
       errorMessage('Email', 'email address is required!');
     } else if (!validateEmail(email)) {
       errorMessage('Email', 'valid email is required!');
-    } else if (!isEmpty(selectedItem)) {
+    } else if (!isEmpty(selectedItem) && isEmpty(route.params)) {
       errorMessage('Email', 'This email already exist!');
     } else if (password.trim().length === 0) {
       errorMessage('Password', 'password is required!');
@@ -99,19 +101,15 @@ const signUpScreen = ({navigation}) => {
       if (isEmpty(route?.params)) {
         dispatch({type: USER_DATA, payload: [data]});
       } else {
-        let updatedUserData = allUserData.filter(item => {
-          if (item?.email === email) {
-            return {
-              ...item,
-              mame: name,
-              email: email,
-              password: password,
-              dob: moment(date).format('DD/MM/YYY'),
-              gender: isSelectValue,
-            };
-          }
-          return item;
-        });
+        objIndex = allUserData.findIndex(obj => obj.email == email);
+
+        allUserData[objIndex].name = name;
+        allUserData[objIndex].email = email;
+        allUserData[objIndex].password = password;
+        allUserData[objIndex].gender = isSelectValue;
+        allUserData[objIndex].dob = moment(date).format('DD/MM/YYYY');
+
+        dispatch({type: USER_DATA, payload: updatedUserData});
       }
     }
   };
