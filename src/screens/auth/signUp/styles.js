@@ -75,6 +75,16 @@ const style = StyleSheet.create({
     tintColor: colors.commonColor,
     transform: [{rotate: '90deg'}],
   },
+  datePickerViewStyle: {
+    borderRadius: wp(2.66),
+    marginTop: hp(1.72),
+    paddingVertical: hp(2.66),
+    backgroundColor: colors.backgroundColor,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: wp(6.33),
+  },
 });
 
 export default style;

@@ -13,8 +13,7 @@ const style = StyleSheet.create({
   buttonTextStyle: {
     textAlign: 'center',
     fontSize: wp(4.8),
-    fontFamily: fontFamily.ceraPro_Light,
-    fontWeight: '400',
+    fontFamily: fontFamily.regular,
     color: colors.primaryWhite,
   },
   iconStyle: {

@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, Keyboard, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useIsFocused, useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
+import {isEmpty} from 'lodash';
 
 import {Button, DropDown} from '../../../components';
 import InputText from '../../../components/Common/TextInput';
@@ -31,6 +32,27 @@ const signUpScreen = ({navigation}) => {
 
   console.log('auth:--', allUserData);
 
+  const selectedItem = allUserData?.filter(item => item?.email === email);
+
+  const route = useRoute();
+  const isFocued = useIsFocused();
+
+  useEffect(() => {
+    if (!isEmpty(route?.params)) {
+      setName(route?.params?.data?.name);
+      setEmail(route?.params?.data?.email);
+      setPassword(route?.params?.data?.password);
+      setIsSelectValue(route?.params?.data?.gender);
+      setDate(new Date(route?.params?.data?.dob));
+    } else {
+      setName('');
+      setEmail('');
+      setPassword('');
+      setIsSelectValue('');
+      setDate(new Date());
+    }
+  }, [isFocued]);
+
   const dispatch = useDispatch();
 
   const onPressDrop = item => {
@@ -49,6 +71,8 @@ const signUpScreen = ({navigation}) => {
       errorMessage('Email', 'email address is required!');
     } else if (!validateEmail(email)) {
       errorMessage('Email', 'valid email is required!');
+    } else if (!isEmpty(selectedItem)) {
+      errorMessage('Email', 'This email already exist!');
     } else if (password.trim().length === 0) {
       errorMessage('Password', 'password is required!');
     } else if (isSelectValue == '') {
@@ -70,15 +94,34 @@ const signUpScreen = ({navigation}) => {
         }),
       );
       AsyncStorage.setItem(asyncStorageKey.isLogin, JSON.stringify(true));
+      AsyncStorage.setItem(asyncStorageKey.userDetails, JSON.stringify(data));
 
-      dispatch({type: USER_DATA, payload: [data]});
+      if (isEmpty(route?.params)) {
+        dispatch({type: USER_DATA, payload: [data]});
+      } else {
+        let updatedUserData = allUserData.filter(item => {
+          if (item?.email === email) {
+            return {
+              ...item,
+              mame: name,
+              email: email,
+              password: password,
+              dob: moment(date).format('DD/MM/YYY'),
+              gender: isSelectValue,
+            };
+          }
+          return item;
+        });
+      }
     }
   };
 
   return (
     <View onTouchStart={() => Keyboard.dismiss()} style={style.containerStyle}>
       <View style={style.subContainerStyle}>
-        <Text style={style.subTitleTextStyle}>{'Create new account'}</Text>
+        <Text style={style.subTitleTextStyle}>
+          {route?.params ? 'Update User Info' : 'Create new account'}
+        </Text>
         <InputText
           containerStyle={{
             marginTop: hp(1.72),
@@ -129,17 +172,7 @@ const signUpScreen = ({navigation}) => {
           isSelectValue={isSelectValue}
         />
         <TouchableOpacity
-          style={{
-            borderRadius: wp(2.66),
-            borderWidth: !isDate ? 1 : 0,
-            marginTop: hp(1.72),
-            paddingVertical: hp(2.66),
-            backgroundColor: colors.backgroundColor,
-            alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingHorizontal: wp(6.33),
-          }}
+          style={{...style.datePickerViewStyle, borderWidth: !isDate ? 1 : 0}}
           onPress={() => setIsDatePicker(true)}>
           <Text
             style={{
@@ -155,41 +188,58 @@ const signUpScreen = ({navigation}) => {
           />
         </TouchableOpacity>
         <Button
-          title={'Sign Up'}
+          title={route?.params ? 'Update' : 'Sign Up'}
           buttonStyle={style.loginButtonStyle}
           buttonTextStyle={style.loginButtonTextStyle}
           onPress={onSignUpPress}
         />
+        {!isEmpty(route?.params) && (
+          <Button
+            title={'Log-Out'}
+            buttonStyle={{...style.loginButtonStyle, backgroundColor: 'orange'}}
+            buttonTextStyle={{
+              ...style.loginButtonTextStyle,
+              color: colors.commonColor,
+            }}
+            onPress={() => {
+              navigation.navigate(screenString.loginScreen);
+              AsyncStorage.clear();
+            }}
+          />
+        )}
       </View>
-      <TouchableOpacity
-        style={style.bottomTextViewStyle}
-        activeOpacity={0.5}
-        onPress={() => navigation.navigate(screenString.loginScreen)}>
-        <Text
-          style={[
-            style.donotHaveAccountTextStyle,
-            {color: colors.commonTextColor},
-          ]}>
-          {'Already have an account?'}
-        </Text>
-        <Text
-          style={[
-            style.donotHaveAccountTextStyle,
-            {color: colors.forgotPasswordColor},
-          ]}>
-          {'SIGN IN'}
-        </Text>
-      </TouchableOpacity>
+      {isEmpty(route?.params) && (
+        <TouchableOpacity
+          style={style.bottomTextViewStyle}
+          activeOpacity={0.5}
+          onPress={() => navigation.navigate(screenString.loginScreen)}>
+          <Text
+            style={[
+              style.donotHaveAccountTextStyle,
+              {color: colors.commonTextColor},
+            ]}>
+            {'Already have an account?'}
+          </Text>
+          <Text
+            style={[
+              style.donotHaveAccountTextStyle,
+              {color: colors.forgotPasswordColor},
+            ]}>
+            {'SIGN IN'}
+          </Text>
+        </TouchableOpacity>
+      )}
       {isDatePicker && (
         <DatePicker
           modal
           mode="date"
-          maximumDate={new Date('2004/05/01')}
+          minimumDate={new Date('01/05/1950')}
+          maximumDate={new Date('01/05/2004')}
           open={isDatePicker}
           date={date}
           onConfirm={date => {
-            setIsDatePicker(false);
             setDate(date);
+            setIsDatePicker(false);
           }}
           onCancel={() => {
             setIsDatePicker(false);

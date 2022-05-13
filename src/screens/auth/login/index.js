@@ -3,6 +3,7 @@ import {View, Text, Image, Keyboard, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import {isEmpty} from 'lodash';
 
 import {Button} from '../../../components';
 import InputText from '../../../components/Common/TextInput';
@@ -31,12 +32,16 @@ const LoginScreen = ({navigation}) => {
     } else if (password.trim().length === 0) {
       errorMessage('Password', 'password is required!');
     } else {
-      if (isData) {
+      if (!isEmpty(isData)) {
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
             routes: [{name: screenString.listingScreen}],
           }),
+        );
+        AsyncStorage.setItem(
+          asyncStorageKey.userDetails,
+          JSON.stringify(isData?.[0]),
         );
         AsyncStorage.setItem(asyncStorageKey.isLogin, JSON.stringify(true));
       } else {
@@ -63,7 +68,7 @@ const LoginScreen = ({navigation}) => {
           textInputStyle={{fontFamily: fontFamily.regular}}
           value={email}
           placeholder={'Email ID'}
-          placeholderTextColor={colors.shadowColor_4}
+          placeholderTextColor={colors.shadowColor_6}
           onChangeText={setEmail}
           keyboardType={'email-address'}
         />
@@ -77,7 +82,7 @@ const LoginScreen = ({navigation}) => {
           ]}
           value={password}
           placeholder={'Password'}
-          placeholderTextColor={colors.shadowColor_4}
+          placeholderTextColor={colors.shadowColor_6}
           onChangeText={setPassword}
           secureTextEntry={text}
           icon={text ? icons.close_eye : icons.show_eye}

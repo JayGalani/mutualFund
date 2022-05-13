@@ -5,4 +5,6 @@ export const icons = {
   loginscreen: require('../../assets/icons/loginscreen.png'),
   check: require('../../assets/icons/check.png'),
   downArrow: require('../../assets/icons/downArrow.png'),
+  search: require('../../assets/icons/search.png'),
+  close: require('../../assets/icons/close.png'),
 };

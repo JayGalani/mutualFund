@@ -47,7 +47,7 @@ const style = StyleSheet.create({
   headerTextStyle: {
     alignSelf: 'center',
     fontSize: wp(4.8),
-    fontFamily: fontFamily.ceraPro_Light,
+    fontFamily: fontFamily.regular,
     fontWeight: '700',
     color: colors.commonTextColor,
     lineHeight: 26.19,
@@ -77,7 +77,7 @@ const style = StyleSheet.create({
   },
   badgeCountTextStyle: {
     fontSize: wp(1.86),
-    fontFamily: fontFamily.ceraPro_Light,
+    fontFamily: fontFamily.regular,
     fontWeight: '600',
     color: colors.primaryWhite,
   },

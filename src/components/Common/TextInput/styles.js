@@ -18,8 +18,7 @@ const style = StyleSheet.create({
     alignSelf: 'center',
     paddingVertical: 0,
     fontSize: wp(3.73),
-    fontWeight: '400',
-    fontFamily: fontFamily.ceraPro_Light,
+    fontFamily: fontFamily.regular,
     color: colors.commonTextColor,
   },
   imageStyle: {
