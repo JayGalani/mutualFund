@@ -40,9 +40,9 @@ const ListingScreen = ({navigation}) => {
 
   const onItemPress = async item => {
     let response = await fetch(`https://api.mfapi.in/mf/${item?.schemeCode}`);
-    let json = await response.json();
+    let data = await response?.json();
     navigation.navigate(screenString.detailScreen, {
-      data: json,
+      data: data,
     });
   };
 

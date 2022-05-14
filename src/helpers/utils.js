@@ -14,6 +14,8 @@ export const colors = {
   darkGray: '#737373',
   orange: '#FE9925',
   summaryBackGround: '#F2F8FF',
+  startingPointGradient: '#96FFC5',
+  endingPointGradient: '#25B6CC',
   /**rgba */
   smallGroupBackColor: 'rgba(234,235,235,0.2)',
   bottomTabBackgroudColor: 'rgba(254, 153, 37,0.1)',

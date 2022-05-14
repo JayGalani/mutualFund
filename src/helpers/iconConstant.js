@@ -8,5 +8,6 @@ export const icons = {
   search: require('../../assets/icons/search.png'),
   close: require('../../assets/icons/close.png'),
   christian_faith: require('../../assets/icons/christian_faith.png'),
+  down: require('../../assets/icons/down.png'),
   giphy: require('../../assets/icons/giphy.gif'),
 };
