@@ -28,11 +28,7 @@ const signUpScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const [isDatePicker, setIsDatePicker] = useState(false);
 
-  console.log('date', date);
-
   const opneDropDown = () => setOpen(!open);
-
-  console.log('allUserData:--', allUserData);
 
   const selectedItem = allUserData?.filter(item => item?.email === email);
 
@@ -99,17 +95,27 @@ const signUpScreen = ({navigation}) => {
       AsyncStorage.setItem(asyncStorageKey.userDetails, JSON.stringify(data));
 
       if (isEmpty(route?.params)) {
-        dispatch({type: USER_DATA, payload: [data]});
+        let oldData = [];
+        oldData = allUserData;
+        oldData?.push(data);
+
+        dispatch({type: USER_DATA, payload: oldData});
       } else {
-        objIndex = allUserData.findIndex(obj => obj.email == email);
+        const finalUpdatedUserData = allUserData?.map(item => {
+          if (item?.email === email) {
+            return {
+              name: name,
+              email: email,
+              password: password,
+              gender: isSelectValue,
+              dob: moment(date).format('DD/MM/YYYY'),
+            };
+          } else {
+            return item;
+          }
+        });
 
-        allUserData[objIndex].name = name;
-        allUserData[objIndex].email = email;
-        allUserData[objIndex].password = password;
-        allUserData[objIndex].gender = isSelectValue;
-        allUserData[objIndex].dob = moment(date).format('DD/MM/YYYY');
-
-        dispatch({type: USER_DATA, payload: updatedUserData});
+        dispatch({type: USER_DATA, payload: finalUpdatedUserData});
       }
     }
   };

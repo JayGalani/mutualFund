@@ -7,20 +7,19 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {ActivityLoader, Header} from '../../../components';
+import {Header} from '../../../components';
 import {icons} from '../../../helpers/iconConstant';
 import style from './styles';
 import {colors} from '../../../helpers/utils';
 import {hp} from '../../../helpers/constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {asyncStorageKey, screenString} from '../../../helpers/strings';
 
 const ListingScreen = ({navigation}) => {
   const [searchValue, setSearchValue] = useState('');
   const [currentUser, setCurrentUser] = useState({});
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   const getData = async () => {
     const data = await AsyncStorage.getItem(asyncStorageKey.userDetails);
@@ -40,16 +39,15 @@ const ListingScreen = ({navigation}) => {
   }, []);
 
   const onItemPress = async item => {
-    console.log(item);
     let response = await fetch(`https://api.mfapi.in/mf/${item?.schemeCode}`);
     let json = await response.json();
-    console.log('json', json);
-    navigation.navigate(screenString.detailScreen, {data: json});
+    navigation.navigate(screenString.detailScreen, {
+      data: json,
+    });
   };
 
   return (
     <View style={style.container}>
-      <ActivityLoader visible={isLoading} />
       <Header isTitle={'Mutual Fund List'} />
       <TouchableOpacity
         style={style.profileIconStyle}
@@ -90,7 +88,9 @@ const ListingScreen = ({navigation}) => {
         )}
       </View>
       <FlatList
-        data={data.slice(0, 5)}
+        data={data?.filter(e =>
+          e.schemeName?.toLowerCase()?.includes(searchValue.toLowerCase()),
+        )}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({item}) => {
           return (
